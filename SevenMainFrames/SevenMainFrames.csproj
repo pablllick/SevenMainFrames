@@ -70,6 +70,12 @@
     <Compile Include="InterestingFact.Designer.cs">
       <DependentUpon>InterestingFact.cs</DependentUpon>
     </Compile>
+    <Compile Include="Newsreel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Newsreel.Designer.cs">
+      <DependentUpon>Newsreel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -83,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InterestingFact.resx">
       <DependentUpon>InterestingFact.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Newsreel.resx">
+      <DependentUpon>Newsreel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

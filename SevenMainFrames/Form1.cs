@@ -9,14 +9,13 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace SevenMainFrames
 {
-    
-
     public partial class Form1 : Form
     {
-        string filePath, curItem;
+        public string filePath, curItem;
         //int startPoint, startY, endY, count, distance;
 
         
@@ -25,11 +24,9 @@ namespace SevenMainFrames
         {
             InitializeComponent();
 
-            string tempPath = Path.Combine(Path.GetTempPath(), "video.mp4");
-            File.WriteAllBytes(tempPath, Properties.Resources.video);
             //this.FormBorderStyle = FormBorderStyle.None; 
-
-            axWindowsMediaPlayer1.URL = tempPath;
+            
+            axWindowsMediaPlayer1.URL = @"C:\Рабочий стол\videos\video.mp4";
             axWindowsMediaPlayer1.settings.setMode("loop", true);
             axWindowsMediaPlayer1.uiMode = "none";
             axWindowsMediaPlayer1.stretchToFit = true;
@@ -52,8 +49,6 @@ namespace SevenMainFrames
 
             textBox1.TextAlign = HorizontalAlignment.Left;
             textBox2.TextAlign = HorizontalAlignment.Right;
-
-            this.FormClosing += (sender, e) => File.Delete(tempPath);
         }
 
         public class FileProcessor
@@ -122,16 +117,37 @@ namespace SevenMainFrames
             this.BackgroundImage = Properties.Resources.photo;
             PictureBox pict = sender as PictureBox;
             curItem = pict.Name.Split('x')[1];
+            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            if (dirWithVideos.Length == 0)
+            {
+                button5.Visible = false;
+                button5.Enabled = false;
+            }
+            else
+            {
+                button5.Visible = true;
+                button5.Enabled = true;
+            }
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-
             this.BackgroundImage = Properties.Resources.photo1;
             PictureBox pict = sender as PictureBox;
             curItem = pict.Name.Split('x')[1];
+            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            if (dirWithVideos.Length == 0)
+            {
+                button5.Visible = false;
+                button5.Enabled = false;
+            }
+            else
+            {
+                button5.Visible = true;
+                button5.Enabled = true;
+            }
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
         }
@@ -143,6 +159,17 @@ namespace SevenMainFrames
             this.BackgroundImage = Properties.Resources.photo2;
             PictureBox pict = sender as PictureBox;
             curItem = pict.Name.Split('x')[1];
+            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            if (dirWithVideos.Length == 0)
+            {
+                button5.Visible = false;
+                
+            }
+            else
+            {
+                button5.Visible = true;
+                button5.Enabled = true;
+            }
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
         }
@@ -190,6 +217,12 @@ namespace SevenMainFrames
         {
             InterestingFact interestingFact = new InterestingFact();
             interestingFact.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Newsreel newsreel = new Newsreel();
+            newsreel.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)

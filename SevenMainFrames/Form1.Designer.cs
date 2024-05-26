@@ -169,6 +169,7 @@
             this.button5.TabIndex = 6;
             this.button5.Text = "Кинохроника";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // panel1
             // 
@@ -452,7 +453,7 @@
             this.pictureBox5.Size = new System.Drawing.Size(250, 200);
             this.pictureBox5.TabIndex = 12;
             this.pictureBox5.TabStop = false;
-            this.pictureBox5.Click += new System.EventHandler(this.pictureBox6_Click);
+            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
             // 
             // panel5
             // 
@@ -479,7 +480,7 @@
             this.pictureBox4.Size = new System.Drawing.Size(250, 200);
             this.pictureBox4.TabIndex = 11;
             this.pictureBox4.TabStop = false;
-            this.pictureBox4.Click += new System.EventHandler(this.pictureBox5_Click);
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // panel4
             // 
@@ -506,7 +507,7 @@
             this.pictureBox3.Size = new System.Drawing.Size(250, 200);
             this.pictureBox3.TabIndex = 10;
             this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox4_Click);
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // panel3
             // 
@@ -533,7 +534,7 @@
             this.pictureBox2.Size = new System.Drawing.Size(250, 200);
             this.pictureBox2.TabIndex = 9;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // panel2
             // 
