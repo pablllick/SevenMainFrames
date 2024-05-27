@@ -17,17 +17,14 @@ namespace SevenMainFrames
     public partial class Form1 : Form
     {
         public string filePath, curItem;
-        int count, addNumber;
-       
-        //int startPoint, startY, endY, count, distance;
-
-        
+        int count, count2, addNumber, startLocationX, endLocationX, distance, distanceTemp, time;
+        PictureBox pict;
 
         public Form1()
         {
             InitializeComponent();
 
-            //this.FormBorderStyle = FormBorderStyle.None;
+            this.FormBorderStyle = FormBorderStyle.None;
             
             axWindowsMediaPlayer1.URL = @"C:\Рабочий стол\videos\video.mp4";
             axWindowsMediaPlayer1.settings.setMode("loop", true);
@@ -68,6 +65,72 @@ namespace SevenMainFrames
 
             textBox1.TextAlign = HorizontalAlignment.Left;
             textBox2.TextAlign = HorizontalAlignment.Right;
+
+            AssignMouseDownEvent(panel1);
+        }
+
+        private void AssignMouseDownEvent(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is PictureBox || control is Panel)
+                {
+                    control.MouseDown += Panel_MouseDown;
+                    control.MouseUp += Panel_MouseUp;
+                    if (control.HasChildren)
+                    {
+                        AssignMouseDownEvent(control);
+                    }
+                }
+            }
+            parent.MouseDown += Panel_MouseDown;
+            parent.MouseUp += Panel_MouseUp;
+        }
+
+        private void Panel_MouseUp(object sender, MouseEventArgs e)
+        {
+            Control control = sender as Control;
+
+            Point screenCoordinates = panel1.PointToScreen(e.Location);
+            Point panelCoordinates = panel1.PointToClient(screenCoordinates);
+            Panel parentPanel = control.Parent as Panel;
+
+            if (control is PictureBox)
+            {
+                if (parentPanel != null)
+                {
+                    endLocationX = panelCoordinates.X + parentPanel.Location.X;
+                }
+            }
+            else
+            {
+                endLocationX = panelCoordinates.X + control.Location.X;
+            }
+            distance = startLocationX - endLocationX;
+            distanceTemp = distance;
+           // label1.Text = startLocationX.ToString() + " - " + distanceTemp.ToString();
+            timer2.Start();
+        }
+
+        private void Panel_MouseDown(object sender, MouseEventArgs e)
+        {
+            Control control = sender as Control;
+            
+            Point screenCoordinates = panel1.PointToScreen(e.Location);
+            Point panelCoordinates = panel1.PointToClient(screenCoordinates);
+            Panel parentPanel = control.Parent as Panel;
+
+            if (control is PictureBox)
+            {
+                if (parentPanel != null)
+                {
+                    startLocationX = panelCoordinates.X + parentPanel.Location.X;
+                }
+            }
+            else
+            {
+                startLocationX = panelCoordinates.X + control.Location.X;
+            }
         }
 
         public class FileProcessor
@@ -123,21 +186,37 @@ namespace SevenMainFrames
             label7.Text = "Очень интересный текст";
         }
 
- 
+        public static class PanelHelper
+        {
+            private static Panel previousPanel = null;
+            public static void SetPanelBorderStyle(Control control)
+            {
+                Panel currentPanel = control.Parent as Panel;
+                if (currentPanel != null)
+                {
+                    if (previousPanel != null && previousPanel != currentPanel)
+                    {
+                        previousPanel.BorderStyle = BorderStyle.None;
+                    }
+                    currentPanel.BorderStyle = BorderStyle.FixedSingle;
+                    previousPanel = currentPanel;
+                }
+            }
+        }
+
         private void axWindowsMediaPlayer1_ClickEvent(object sender, AxWMPLib._WMPOCXEvents_ClickEvent e)
         {
             axWindowsMediaPlayer1.Visible = false;
+            timer3.Start();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo;
-            /*Panel panel = this.Controls["panel" + (int.Parse(curItem) + 1).ToString()] as Panel;
-            if (panel != null)
-            {
-                panel.BorderStyle = BorderStyle.FixedSingle;
-            }*/
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+
             curItem = pict.Name.Split('x')[1];
                 
             string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
@@ -158,7 +237,10 @@ namespace SevenMainFrames
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo1;
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+           
             curItem = pict.Name.Split('x')[1];
             string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
             if (dirWithVideos.Length == 0)
@@ -180,7 +262,10 @@ namespace SevenMainFrames
         private void pictureBox3_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo2;
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+
             curItem = pict.Name.Split('x')[1];
             string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
             if (dirWithVideos.Length == 0)
@@ -200,7 +285,10 @@ namespace SevenMainFrames
         private void pictureBox4_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo;
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+
             curItem = pict.Name.Split('x')[1];
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
@@ -209,7 +297,10 @@ namespace SevenMainFrames
         private void pictureBox5_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo1;
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+
             curItem = pict.Name.Split('x')[1];
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
@@ -218,27 +309,52 @@ namespace SevenMainFrames
         private void pictureBox6_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo2;
-            PictureBox pict = sender as PictureBox;
+            pict = sender as PictureBox;
+
+            PanelHelper.SetPanelBorderStyle(pict);
+
             curItem = pict.Name.Split('x')[1];
             FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
             fileProcessor.ProcessFile();
+
         }
+
+       
 
         private void button2_Click(object sender, EventArgs e)
         {
             Gallery gallery = new Gallery();
+            time = 0;
             gallery.Show();
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            time++;
+            if (time == 300)
+            {
+                axWindowsMediaPlayer1.Visible = true;
+                time = 0;
+                timer3.Stop();
+                for (int i = Application.OpenForms.Count - 1; i >= 0; i--)
+                {
+                    if (Application.OpenForms[i].Name != "Form1")
+                        Application.OpenForms[i].Close();
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             History history = new History();
+            time = 0;
             history.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             InterestingFact interestingFact = new InterestingFact();
+            time = 0;
             interestingFact.Show();
         }
 
@@ -248,15 +364,122 @@ namespace SevenMainFrames
             newsreel.Show();
         }
 
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+           
+
+            if (distance < 0)
+            {
+                if (distanceTemp > -20)
+                {
+
+                    panel1.HorizontalScroll.Value = 0;
+                    timer2.Stop();
+                }
+                else
+                {
+                    distanceTemp += 20;
+                    int a = panel1.HorizontalScroll.Value - 20;
+                    if (a < 0)
+                    {
+                        panel1.HorizontalScroll.Value = 0;
+                        timer2.Stop();
+                    }
+                    else
+                    {
+                        panel1.HorizontalScroll.Value = a;
+                    }
+                }
+            }
+
+            /*else if (distance > 0)
+            {
+                if (distanceTemp < 20)
+                {
+                    if (panel1.HorizontalScroll.Maximum != panel1.HorizontalScroll.Value)
+                    {
+                        distanceTemp -= 20;
+                        panel1.HorizontalScroll.Value += 20;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }*/
+
+
+
+
+
+
+
+
+
+
+            /*if (distance > 0) 
+            {
+                if (distanceTemp < -21)
+                {
+                    distance += 20;
+                    panel1.HorizontalScroll.Value -= 20;
+                }
+                else
+                {
+                    panel1.HorizontalScroll.Value -= distance;
+                    timer2.Stop();
+                }
+            }
+            else if (distance < 0)
+            {
+                if (distanceTemp > 0)
+                {
+                    if (distanceTemp > 21)
+                    {
+                        distance -= 20;
+                        panel1.HorizontalScroll.Value += 20;
+                    }
+                    else
+                    {
+                        panel1.HorizontalScroll.Value += distance;
+                        timer2.Stop();
+                    }
+                }
+            }*/
+
+
+            /*if (count < 27)
+            {
+                if (panel1.HorizontalScroll.Value < 20 && addNumber < 0)
+                {
+                    panel1.HorizontalScroll.Value = 0;
+                    count = 0;
+                    timer2.Stop();
+                }
+                else
+                {
+                    panel1.HorizontalScroll.Value += addNumber;
+                }
+            }
+            else
+            {
+                count = 0;
+                timer2.Stop();
+            }*/
+        }
+
         private void button6_Click(object sender, EventArgs e)
         {
             addNumber = -20;
+            time = 0;
             timer1.Start();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             addNumber = 20;
+            time = 0;
             timer1.Start();
         }
 
@@ -286,6 +509,7 @@ namespace SevenMainFrames
         private void button4_Click(object sender, EventArgs e)
         {
             SoundPlayer simpleSound = new SoundPlayer($@"C:\\Рабочий стол\\sound\\{curItem}.wav");
+            time = 0;
             simpleSound.Play();
         }
 

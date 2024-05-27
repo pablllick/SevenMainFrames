@@ -21,6 +21,9 @@ namespace SevenMainFrames
         {
             InitializeComponent();
 
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Size = new System.Drawing.Size(1920, 1080);
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             timer1.Start();
 
             string curItem = ((Form1)f).curItem;

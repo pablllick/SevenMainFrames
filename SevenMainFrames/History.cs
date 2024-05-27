@@ -15,6 +15,9 @@ namespace SevenMainFrames
         public History()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Size = new System.Drawing.Size(1920, 1080);
+            this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void button3_Click(object sender, EventArgs e)

@@ -49,7 +49,7 @@
             // axWindowsMediaPlayer1
             // 
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(-8, -20);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
             this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(1920, 1080);
@@ -68,6 +68,7 @@
             this.ClientSize = new System.Drawing.Size(1904, 1041);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.axWindowsMediaPlayer1);
+            this.DoubleBuffered = true;
             this.Name = "Newsreel";
             this.Text = "Newsreel";
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();

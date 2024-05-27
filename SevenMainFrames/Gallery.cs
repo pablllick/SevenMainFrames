@@ -16,6 +16,9 @@ namespace SevenMainFrames
         public Gallery()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Size = new System.Drawing.Size(1920, 1080);
+            this.BackgroundImageLayout = ImageLayout.Stretch;
 
             string[] imagePaths = new string[]
             {
