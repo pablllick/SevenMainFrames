@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -11,18 +12,58 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Runtime.InteropServices;
+using System.Timers;
 
 namespace SevenMainFrames
 {
     public partial class Form1 : Form
     {
         public string filePath, curItem;
-        int count, count2, addNumber, startLocationX, endLocationX, distance, distanceTemp, time;
+        int time;
         PictureBox pict;
+        private FlowLayoutPanel imagePanel;
+        private System.Timers.Timer timer;
+        private DateTime startTime;
+        private int startScrollPosition;
+        private int targetScrollPosition;
+        private int duration = 1000;
+        private int scrollDistance = 500;
+        private int mouseDownPosition;
+        private bool isDragging = false;
+        private int dragThreshold = 10;
 
         public Form1()
         {
             InitializeComponent();
+            InitializeImagePanel();
+
+            timer = new System.Timers.Timer();
+            timer.Interval = 16;
+            timer.Elapsed += Timer_Elapsed;
+
+            flowLayoutPanel1.MouseDown += FlowLayoutPanel1_MouseDown;
+            flowLayoutPanel1.MouseUp += FlowLayoutPanel1_MouseUp;
+            flowLayoutPanel1.MouseUp += FlowLayoutPanel1_MouseUp;
+
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
+            flowLayoutPanel1.WrapContents = false;
+            flowLayoutPanel1.Size = new Size(1700, 400);
+            
+            void SetDoubleBuffered(Control c)
+            {
+                System.Reflection.PropertyInfo aProp = typeof(Control).GetProperty("DoubleBuffered",
+                    System.Reflection.BindingFlags.NonPublic |
+                    System.Reflection.BindingFlags.Instance);
+                aProp.SetValue(c, true, null);
+            }
+            SetDoubleBuffered(this);
+            this.DoubleBuffered = true;
+            SetDoubleBuffered(flowLayoutPanel1);
+            Image empty = new Bitmap(@"C:\Рабочий стол\empty.png");
+           
+            button1.BackgroundImage = empty;
 
             this.FormBorderStyle = FormBorderStyle.None;
             
@@ -31,7 +72,35 @@ namespace SevenMainFrames
             axWindowsMediaPlayer1.uiMode = "none";
             axWindowsMediaPlayer1.stretchToFit = true;
 
-            this.BackgroundImage = Properties.Resources.photo;
+            this.BackgroundImage = new Bitmap(@"C:\Рабочий стол\photo.png");
+            
+            SetDoubleBuffered(panel2);
+            SetDoubleBuffered(panel3);
+            SetDoubleBuffered(panel4);
+            SetDoubleBuffered(panel5);
+            SetDoubleBuffered(panel6);
+            SetDoubleBuffered(panel7);
+            SetDoubleBuffered(panel8);
+            SetDoubleBuffered(panel9);
+            SetDoubleBuffered(panel10);
+            SetDoubleBuffered(panel11);
+            SetDoubleBuffered(panel12);
+            SetDoubleBuffered(panel13);
+            SetDoubleBuffered(panel14);
+
+            SetDoubleBuffered(pictureBox1);
+            SetDoubleBuffered(pictureBox2);
+            SetDoubleBuffered(pictureBox3);
+            SetDoubleBuffered(pictureBox4);
+            SetDoubleBuffered(pictureBox5);
+            SetDoubleBuffered(pictureBox6);
+            SetDoubleBuffered(pictureBox7);
+            SetDoubleBuffered(pictureBox8);
+            SetDoubleBuffered(pictureBox9);
+            SetDoubleBuffered(pictureBox10);
+            SetDoubleBuffered(pictureBox11);
+            SetDoubleBuffered(pictureBox12);
+            SetDoubleBuffered(pictureBox13);
 
             pictureBox1.Image = Properties.Resources.photo;
             pictureBox2.Image = Properties.Resources.photo1;
@@ -45,8 +114,7 @@ namespace SevenMainFrames
             pictureBox10.Image = Properties.Resources.photo;
             pictureBox11.Image = Properties.Resources.photo1;
             pictureBox12.Image = Properties.Resources.photo2;
-            pictureBox13.Image = Properties.Resources.photo;
-            pictureBox14.Image = Properties.Resources.photo1;
+            pictureBox13.Image = Properties.Resources.photo1;
 
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -61,108 +129,154 @@ namespace SevenMainFrames
             pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox12.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox13.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox14.SizeMode = PictureBoxSizeMode.StretchImage;
+            
+            AssignMouseDownEvent(flowLayoutPanel1);
+        }
 
-            textBox1.TextAlign = HorizontalAlignment.Left;
-            textBox2.TextAlign = HorizontalAlignment.Right;
+        private void InitializeImagePanel()
+        {
+            this.Controls.Add(imagePanel);
+        }
 
-            AssignMouseDownEvent(panel1);
+        private void FlowLayoutPanel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDownPosition = e.Location.X;
+            startScrollPosition = flowLayoutPanel1.HorizontalScroll.Value;
+            isDragging = false;
+        }
+
+        private void FlowLayoutPanel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isDragging && Math.Abs(e.X - mouseDownPosition) > dragThreshold)
+            {
+                isDragging = true;
+            }
+        }
+
+        private void FlowLayoutPanel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                int mouseUpPosition = e.Location.X;
+
+                if (mouseUpPosition > mouseDownPosition)
+                {
+                    targetScrollPosition = startScrollPosition - scrollDistance;
+                }
+                else
+                {
+                    targetScrollPosition = startScrollPosition + scrollDistance;
+                }
+
+                targetScrollPosition = Math.Max(0, Math.Min(targetScrollPosition, flowLayoutPanel1.HorizontalScroll.Maximum));
+
+                startTime = DateTime.Now;
+                timer.Start();
+            }
+            else
+            {
+
+            }
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            double elapsed = (DateTime.Now - startTime).TotalMilliseconds;
+            double t = elapsed / duration;
+
+            if (t > 1)
+            {
+                t = 1;
+                timer.Stop();
+            }
+
+            double easedT = EaseOutCubic(t);
+
+            int newScrollPosition = startScrollPosition + (int)((targetScrollPosition - startScrollPosition) * easedT);
+
+            flowLayoutPanel1.Invoke((MethodInvoker)delegate
+            {
+                flowLayoutPanel1.HorizontalScroll.Value = newScrollPosition;
+                flowLayoutPanel1.PerformLayout();
+            });
+        }
+
+        private double EaseOutCubic(double x)
+        {
+            return 1 - Math.Pow(1 - x, 3);
         }
 
         private void AssignMouseDownEvent(Control parent)
-        {
-            foreach (Control control in parent.Controls)
-            {
-                if (control is PictureBox || control is Panel)
-                {
-                    control.MouseDown += Panel_MouseDown;
-                    control.MouseUp += Panel_MouseUp;
+         {
+             foreach (Control control in parent.Controls)
+             {
+                 if (control is PictureBox || control is Panel)
+                 {
+                    control.MouseDown += FlowLayoutPanel1_MouseDown;
+                    control.MouseMove += FlowLayoutPanel1_MouseMove;
+                    control.MouseUp += FlowLayoutPanel1_MouseUp;
+
                     if (control.HasChildren)
                     {
                         AssignMouseDownEvent(control);
                     }
-                }
-            }
-            parent.MouseDown += Panel_MouseDown;
-            parent.MouseUp += Panel_MouseUp;
-        }
-
-        private void Panel_MouseUp(object sender, MouseEventArgs e)
-        {
-            Control control = sender as Control;
-
-            Point screenCoordinates = panel1.PointToScreen(e.Location);
-            Point panelCoordinates = panel1.PointToClient(screenCoordinates);
-            Panel parentPanel = control.Parent as Panel;
-
-            if (control is PictureBox)
-            {
-                if (parentPanel != null)
-                {
-                    endLocationX = panelCoordinates.X + parentPanel.Location.X;
-                }
-            }
-            else
-            {
-                endLocationX = panelCoordinates.X + control.Location.X;
-            }
-            distance = startLocationX - endLocationX;
-            distanceTemp = distance;
-           // label1.Text = startLocationX.ToString() + " - " + distanceTemp.ToString();
-            timer2.Start();
-        }
-
-        private void Panel_MouseDown(object sender, MouseEventArgs e)
-        {
-            Control control = sender as Control;
-            
-            Point screenCoordinates = panel1.PointToScreen(e.Location);
-            Point panelCoordinates = panel1.PointToClient(screenCoordinates);
-            Panel parentPanel = control.Parent as Panel;
-
-            if (control is PictureBox)
-            {
-                if (parentPanel != null)
-                {
-                    startLocationX = panelCoordinates.X + parentPanel.Location.X;
-                }
-            }
-            else
-            {
-                startLocationX = panelCoordinates.X + control.Location.X;
-            }
-        }
+                 }
+             }
+             parent.MouseDown += FlowLayoutPanel1_MouseDown;
+            parent.MouseMove += FlowLayoutPanel1_MouseMove;
+             parent.MouseUp += FlowLayoutPanel1_MouseUp;
+         }
 
         public class FileProcessor
         {
             private string _filePath;
-            private TextBox _textBox1;
-            private TextBox _textBox2;
+            private Label _label8;
+            private Label _label1;
 
-            public FileProcessor(string filePath, TextBox textBox1, TextBox textBox2)
+            public FileProcessor(string filePath, Label label8, Label label1)
             {
+             
                 _filePath = filePath;
-                _textBox1 = textBox1;
-                _textBox2 = textBox2;
+                _label8 = label8;
+                _label1 = label1;
             }
 
-
+            public class TransparentControl : UserControl
+            {
+                public TransparentControl()
+                {
+                    this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+                    this.BackColor = Color.Transparent;
+                }
+            }
 
             public void ProcessFile()
             {
                 using (StreamReader streamReader = new StreamReader(_filePath))
                 {
-                    _textBox1.Text = "";
-                    _textBox2.Text = "";
+                    _label8.Text = "";
+                    _label1.Text = "";
+                    string l = "";
+                    string r = "";
                     while (!streamReader.EndOfStream)
                     {
                         string[] totalData = streamReader.ReadLine().Split(',');
                         if (totalData.Length >= 2) 
                         {
-                            _textBox1.AppendText(totalData[0] + Environment.NewLine);
-                            _textBox2.AppendText(totalData[1] + Environment.NewLine);
+                            l += totalData[0] + Environment.NewLine;
+                            r += totalData[1] + Environment.NewLine;
+                            
+                            _label1.SuspendLayout();
+                            _label1.Text += totalData[1] + Environment.NewLine;
+                            _label1.ResumeLayout();
                         }
                     }
+                    _label8.SuspendLayout();
+                    _label8.Text = l;
+                    _label8.ResumeLayout();
+                    _label1.SuspendLayout();
+                    _label1.Text = r;
+                    _label1.ResumeLayout();
                 }
             }
         }
@@ -170,21 +284,15 @@ namespace SevenMainFrames
         
 
             private void Form1_Load(object sender, EventArgs e)
-        { 
-            this.Size = new System.Drawing.Size(1920, 1080);
-            this.BackgroundImageLayout= ImageLayout.Stretch;
-            curItem = "1";
-            filePath = "..//..//..//1.txt";
-            FileProcessor fileProcessor = new FileProcessor(filePath, textBox1, textBox2);
-            fileProcessor.ProcessFile();
-          
-            label2.Text = "Очень интересный текст";
-            label3.Text = "Очень интересный текст";
-            label4.Text = "Очень интересный текст";
-            label5.Text = "Очень интересный текст";
-            label6.Text = "Очень интересный текст";
-            label7.Text = "Очень интересный текст";
-        }
+            { 
+                this.Size = new System.Drawing.Size(1920, 1080);
+                this.BackgroundImageLayout= ImageLayout.Stretch;
+            
+                curItem = "1";
+                filePath = "..//..//..//1.txt";
+                FileProcessor fileProcessor = new FileProcessor(filePath, label8, label1);
+                fileProcessor.ProcessFile();
+            }
 
         public static class PanelHelper
         {
@@ -213,6 +321,7 @@ namespace SevenMainFrames
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo;
+           
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
@@ -230,7 +339,7 @@ namespace SevenMainFrames
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
 
@@ -253,12 +362,9 @@ namespace SevenMainFrames
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
-
- 
-
         private void pictureBox3_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo2;
@@ -278,7 +384,7 @@ namespace SevenMainFrames
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
 
@@ -290,10 +396,9 @@ namespace SevenMainFrames
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
-
         private void pictureBox5_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo1;
@@ -302,10 +407,9 @@ namespace SevenMainFrames
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
-
         private void pictureBox6_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.photo2;
@@ -314,12 +418,10 @@ namespace SevenMainFrames
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", textBox1, textBox2);
+            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
 
         }
-
-       
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -343,6 +445,33 @@ namespace SevenMainFrames
                 }
             }
         }
+        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type == ScrollEventType.First)
+            {
+                LockWindowUpdate(this.Handle);
+            }
+            else
+            {
+                LockWindowUpdate(IntPtr.Zero);
+                flowLayoutPanel1.Update();
+                if (e.Type != ScrollEventType.Last) LockWindowUpdate(this.Handle);
+            }
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool LockWindowUpdate(IntPtr hWnd);
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_COMPOSITED = 0x02000000;
+                var cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_COMPOSITED;
+                return cp;
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -364,147 +493,6 @@ namespace SevenMainFrames
             newsreel.Show();
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-           
-
-            if (distance < 0)
-            {
-                if (distanceTemp > -20)
-                {
-
-                    panel1.HorizontalScroll.Value = 0;
-                    timer2.Stop();
-                }
-                else
-                {
-                    distanceTemp += 20;
-                    int a = panel1.HorizontalScroll.Value - 20;
-                    if (a < 0)
-                    {
-                        panel1.HorizontalScroll.Value = 0;
-                        timer2.Stop();
-                    }
-                    else
-                    {
-                        panel1.HorizontalScroll.Value = a;
-                    }
-                }
-            }
-
-            /*else if (distance > 0)
-            {
-                if (distanceTemp < 20)
-                {
-                    if (panel1.HorizontalScroll.Maximum != panel1.HorizontalScroll.Value)
-                    {
-                        distanceTemp -= 20;
-                        panel1.HorizontalScroll.Value += 20;
-                    }
-                    else
-                    {
-
-                    }
-                }
-
-            }*/
-
-
-
-
-
-
-
-
-
-
-            /*if (distance > 0) 
-            {
-                if (distanceTemp < -21)
-                {
-                    distance += 20;
-                    panel1.HorizontalScroll.Value -= 20;
-                }
-                else
-                {
-                    panel1.HorizontalScroll.Value -= distance;
-                    timer2.Stop();
-                }
-            }
-            else if (distance < 0)
-            {
-                if (distanceTemp > 0)
-                {
-                    if (distanceTemp > 21)
-                    {
-                        distance -= 20;
-                        panel1.HorizontalScroll.Value += 20;
-                    }
-                    else
-                    {
-                        panel1.HorizontalScroll.Value += distance;
-                        timer2.Stop();
-                    }
-                }
-            }*/
-
-
-            /*if (count < 27)
-            {
-                if (panel1.HorizontalScroll.Value < 20 && addNumber < 0)
-                {
-                    panel1.HorizontalScroll.Value = 0;
-                    count = 0;
-                    timer2.Stop();
-                }
-                else
-                {
-                    panel1.HorizontalScroll.Value += addNumber;
-                }
-            }
-            else
-            {
-                count = 0;
-                timer2.Stop();
-            }*/
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            addNumber = -20;
-            time = 0;
-            timer1.Start();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            addNumber = 20;
-            time = 0;
-            timer1.Start();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            count ++;
-            if (count < 27)
-            {
-                if (panel1.HorizontalScroll.Value < 20 && addNumber < 0)
-                {
-                    panel1.HorizontalScroll.Value = 0;
-                    count = 0;
-                    timer1.Stop();
-                }
-                else
-                {
-                    panel1.HorizontalScroll.Value += addNumber;
-                }  
-            }
-            else
-            {
-                count = 0;
-                timer1.Stop();
-            }
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -512,35 +500,5 @@ namespace SevenMainFrames
             time = 0;
             simpleSound.Play();
         }
-
-        /* private void timer1_Tick(object sender, EventArgs e)
-         {
-             count += 10;
-             if (count < distance)
-             {
-                 panel8.VerticalScroll.Value += 10;
-             }
-             else
-             {
-                 timer1.Stop();
-             }
-         }
-
-         private void label1_MouseDown(object sender, MouseEventArgs e)
-         {
-             //startPoint = panel8.VerticalScroll.Value;
-             startY = e.Y;
-             label8.Text = startY.ToString();
-         }
-
-
-         private void label1_MouseUp(object sender, MouseEventArgs e)
-         {
-             endY = e.Y;
-             distance = endY - startY;
-          //   Math.Round(label1.Size.Height - distance);
-             count = 0;
-             timer1.Start();
-         } */
     }
 }
