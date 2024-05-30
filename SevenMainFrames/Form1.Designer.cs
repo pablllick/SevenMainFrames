@@ -114,12 +114,12 @@
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("Century", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Font = new System.Drawing.Font("Century", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1.Location = new System.Drawing.Point(1614, 36);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(252, 124);
             this.button1.TabIndex = 2;
-            this.button1.Text = "История создания/компании/мотоцикла";
+            this.button1.Text = "История\r\nсоздания/компании\r\n/мотоцикла";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -172,7 +172,7 @@
             this.panel14.BackColor = System.Drawing.Color.Transparent;
             this.panel14.Controls.Add(this.label15);
             this.panel14.Controls.Add(this.pictureBox13);
-            this.panel14.Location = new System.Drawing.Point(3, 535);
+            this.panel14.Location = new System.Drawing.Point(1333, 269);
             this.panel14.Name = "panel14";
             this.panel14.Size = new System.Drawing.Size(260, 260);
             this.panel14.TabIndex = 18;
@@ -201,7 +201,7 @@
             this.panel13.BackColor = System.Drawing.Color.Transparent;
             this.panel13.Controls.Add(this.label14);
             this.panel13.Controls.Add(this.pictureBox12);
-            this.panel13.Location = new System.Drawing.Point(1333, 269);
+            this.panel13.Location = new System.Drawing.Point(1067, 269);
             this.panel13.Name = "panel13";
             this.panel13.Size = new System.Drawing.Size(260, 260);
             this.panel13.TabIndex = 18;
@@ -230,7 +230,7 @@
             this.panel12.BackColor = System.Drawing.Color.Transparent;
             this.panel12.Controls.Add(this.label13);
             this.panel12.Controls.Add(this.pictureBox11);
-            this.panel12.Location = new System.Drawing.Point(1067, 269);
+            this.panel12.Location = new System.Drawing.Point(801, 269);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(260, 260);
             this.panel12.TabIndex = 18;
@@ -259,7 +259,7 @@
             this.panel11.BackColor = System.Drawing.Color.Transparent;
             this.panel11.Controls.Add(this.label12);
             this.panel11.Controls.Add(this.pictureBox10);
-            this.panel11.Location = new System.Drawing.Point(801, 269);
+            this.panel11.Location = new System.Drawing.Point(535, 269);
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(260, 260);
             this.panel11.TabIndex = 18;
@@ -288,7 +288,7 @@
             this.panel10.BackColor = System.Drawing.Color.Transparent;
             this.panel10.Controls.Add(this.label11);
             this.panel10.Controls.Add(this.pictureBox9);
-            this.panel10.Location = new System.Drawing.Point(535, 269);
+            this.panel10.Location = new System.Drawing.Point(269, 269);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(260, 260);
             this.panel10.TabIndex = 18;
@@ -306,8 +306,8 @@
             // 
             // pictureBox9
             // 
-            this.pictureBox9.BackColor = System.Drawing.SystemColors.Control;
-            this.pictureBox9.Location = new System.Drawing.Point(3, 0);
+            this.pictureBox9.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox9.Location = new System.Drawing.Point(3, 6);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(250, 200);
             this.pictureBox9.TabIndex = 13;
@@ -318,7 +318,7 @@
             this.panel8.BackColor = System.Drawing.Color.Transparent;
             this.panel8.Controls.Add(this.label9);
             this.panel8.Controls.Add(this.pictureBox7);
-            this.panel8.Location = new System.Drawing.Point(269, 269);
+            this.panel8.Location = new System.Drawing.Point(3, 269);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(260, 260);
             this.panel8.TabIndex = 16;
@@ -347,7 +347,7 @@
             this.panel9.BackColor = System.Drawing.Color.Transparent;
             this.panel9.Controls.Add(this.label10);
             this.panel9.Controls.Add(this.pictureBox8);
-            this.panel9.Location = new System.Drawing.Point(3, 269);
+            this.panel9.Location = new System.Drawing.Point(1599, 3);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(260, 260);
             this.panel9.TabIndex = 17;
@@ -616,9 +616,9 @@
             this.flowLayoutPanel1.Controls.Add(this.panel12);
             this.flowLayoutPanel1.Controls.Add(this.panel13);
             this.flowLayoutPanel1.Controls.Add(this.panel14);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(108, 819);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 819);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1616, 261);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1891, 261);
             this.flowLayoutPanel1.TabIndex = 18;
             this.flowLayoutPanel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.flowLayoutPanel1_Scroll);
             // 

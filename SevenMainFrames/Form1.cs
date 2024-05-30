@@ -17,8 +17,10 @@ using System.Timers;
 
 namespace SevenMainFrames
 {
+
     public partial class Form1 : Form
     {
+        private ButtonAnimator buttonAnimator;
         public string filePath, curItem;
         int time;
         PictureBox pict;
@@ -38,6 +40,8 @@ namespace SevenMainFrames
             InitializeComponent();
             InitializeImagePanel();
 
+            buttonAnimator = new ButtonAnimator();
+
             timer = new System.Timers.Timer();
             timer.Interval = 16;
             timer.Elapsed += Timer_Elapsed;
@@ -49,7 +53,8 @@ namespace SevenMainFrames
             flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
             flowLayoutPanel1.WrapContents = false;
-            flowLayoutPanel1.Size = new Size(1700, 400);
+            flowLayoutPanel1.Size = new Size(1920, 290);
+            flowLayoutPanel1.Location = new Point(0, flowLayoutPanel1.Location.Y);
             
             void SetDoubleBuffered(Control c)
             {
@@ -425,6 +430,12 @@ namespace SevenMainFrames
 
         private void button2_Click(object sender, EventArgs e)
         {
+            buttonAnimator.StartAnimation(button2, Button2Action);
+            
+        }
+
+        private void Button2Action()
+        {
             Gallery gallery = new Gallery();
             time = 0;
             gallery.Show();
@@ -475,12 +486,23 @@ namespace SevenMainFrames
 
         private void button1_Click(object sender, EventArgs e)
         {
+            buttonAnimator.StartAnimation(button1, Button1Action);
+            
+        }
+
+        private void Button1Action()
+        {
             History history = new History();
             time = 0;
             history.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
+        {
+            buttonAnimator.StartAnimation(button3, Button3Action);
+        }
+
+        private void Button3Action()
         {
             InterestingFact interestingFact = new InterestingFact();
             time = 0;
@@ -489,16 +511,76 @@ namespace SevenMainFrames
 
         private void button5_Click(object sender, EventArgs e)
         {
+            buttonAnimator.StartAnimation(button5, Button5Action);
+        }
+
+        private void Button5Action()
+        {
             Newsreel newsreel = new Newsreel();
             newsreel.Show();
         }
 
-
         private void button4_Click(object sender, EventArgs e)
+        {
+            buttonAnimator.StartAnimation(button4, Button4Action);
+        }
+
+        private void Button4Action()
         {
             SoundPlayer simpleSound = new SoundPlayer($@"C:\\Рабочий стол\\sound\\{curItem}.wav");
             time = 0;
             simpleSound.Play();
+        }
+    }
+
+    public class ButtonAnimator
+    {
+        private System.Windows.Forms.Timer timer;
+        private Button button;
+        private int count;
+        private int startX;
+        private int startY;
+        private const int AnimationSteps = 5;
+        private const int SizeChange = 2;
+        private const int PositionChange = 1;
+
+        public event Action AnimationCompleted;
+
+        public ButtonAnimator()
+        {
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 1; // Adjust the interval as needed
+            timer.Tick += Timer_Tick;
+        }
+
+        public void StartAnimation(Button btn, Action onComplete)
+        {
+            button = btn;
+            startX = btn.Location.X;
+            startY = btn.Location.Y;
+            count = 0;
+            AnimationCompleted = onComplete;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            count++;
+            if (count < AnimationSteps)
+            {
+                button.Size = new Size(button.Width - SizeChange, button.Height - SizeChange);
+                button.Location = new Point(button.Location.X + PositionChange, button.Location.Y - PositionChange);
+            }
+            else
+            {
+                button.Size = new Size(button.Width + SizeChange, button.Height + SizeChange);
+                button.Location = new Point(button.Location.X - PositionChange, button.Location.Y + PositionChange);
+            }
+            if (startX == button.Location.X && startY == button.Location.Y)
+            {
+                timer.Stop();
+                AnimationCompleted?.Invoke();
+            }
         }
     }
 }
