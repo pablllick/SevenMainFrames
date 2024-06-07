@@ -35,6 +35,8 @@ namespace SevenMainFrames
         private bool isDragging = false;
         private int dragThreshold = 10;
 
+
+
         public Form1()
         {
             InitializeComponent();
@@ -66,18 +68,15 @@ namespace SevenMainFrames
             SetDoubleBuffered(this);
             this.DoubleBuffered = true;
             SetDoubleBuffered(flowLayoutPanel1);
-            Image empty = new Bitmap(@"C:\Рабочий стол\empty.png");
-           
-            button1.BackgroundImage = empty;
 
             this.FormBorderStyle = FormBorderStyle.None;
             
-            axWindowsMediaPlayer1.URL = @"C:\Рабочий стол\videos\video.mp4";
+            axWindowsMediaPlayer1.URL = @"C:\SevenMainFrames\form_backgrounds\video.mp4";
             axWindowsMediaPlayer1.settings.setMode("loop", true);
             axWindowsMediaPlayer1.uiMode = "none";
             axWindowsMediaPlayer1.stretchToFit = true;
 
-            this.BackgroundImage = new Bitmap(@"C:\Рабочий стол\photo.png");
+            this.BackgroundImage = new Bitmap(@"C:\SevenMainFrames\1\img_motorcycles\img_background\1.png");
             
             SetDoubleBuffered(panel2);
             SetDoubleBuffered(panel3);
@@ -93,7 +92,27 @@ namespace SevenMainFrames
             SetDoubleBuffered(panel13);
             SetDoubleBuffered(panel14);
 
-            SetDoubleBuffered(pictureBox1);
+            PictureBox[] pictureBoxes = {
+                pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5,
+                pictureBox6, pictureBox7, pictureBox8, pictureBox9, pictureBox10,
+                pictureBox11, pictureBox12, pictureBox13
+            };
+
+            for (int i = 0; i < pictureBoxes.Length; i++)
+            {
+                try
+                {
+                    pictureBoxes[i].Image = Image.FromFile($@"C:\SevenMainFrames\{i + 1}\img_motorcycles\img_small_box\{i + 1}.png");
+                    pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                    SetDoubleBuffered(pictureBoxes[i]);
+                }
+                catch 
+                {
+
+                }
+            }
+
+            /*SetDoubleBuffered(pictureBox1);
             SetDoubleBuffered(pictureBox2);
             SetDoubleBuffered(pictureBox3);
             SetDoubleBuffered(pictureBox4);
@@ -105,9 +124,11 @@ namespace SevenMainFrames
             SetDoubleBuffered(pictureBox10);
             SetDoubleBuffered(pictureBox11);
             SetDoubleBuffered(pictureBox12);
-            SetDoubleBuffered(pictureBox13);
+            SetDoubleBuffered(pictureBox13);*/
 
-            pictureBox1.Image = Properties.Resources.photo;
+
+
+            /*pictureBox1.Image = Properties.Resources.photo;
             pictureBox2.Image = Properties.Resources.photo1;
             pictureBox3.Image = Properties.Resources.photo2;
             pictureBox4.Image = Properties.Resources.photo;
@@ -119,9 +140,9 @@ namespace SevenMainFrames
             pictureBox10.Image = Properties.Resources.photo;
             pictureBox11.Image = Properties.Resources.photo1;
             pictureBox12.Image = Properties.Resources.photo2;
-            pictureBox13.Image = Properties.Resources.photo1;
+            pictureBox13.Image = Properties.Resources.photo1;*/
 
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            /*pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -133,7 +154,7 @@ namespace SevenMainFrames
             pictureBox10.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox12.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox13.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox13.SizeMode = PictureBoxSizeMode.StretchImage;*/
             
             AssignMouseDownEvent(flowLayoutPanel1);
         }
@@ -294,7 +315,7 @@ namespace SevenMainFrames
                 this.BackgroundImageLayout= ImageLayout.Stretch;
             
                 curItem = "1";
-                filePath = "..//..//..//1.txt";
+                filePath = "C:\\SevenMainFrames\\1\\characteristic_motorcycles\\1.txt";
                 FileProcessor fileProcessor = new FileProcessor(filePath, label8, label1);
                 fileProcessor.ProcessFile();
             }
@@ -325,15 +346,16 @@ namespace SevenMainFrames
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo;
+
            
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
+            this.BackgroundImage = Image.FromFile($@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_background\{curItem}.png");
                 
-            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            string[] dirWithVideos = Directory.GetFiles($@"C:\SevenMainFrames\{curItem}\video_motorcycles");
             if (dirWithVideos.Length == 0)
             {
                 button5.Visible = false;
@@ -344,19 +366,21 @@ namespace SevenMainFrames
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo1;
+
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
-           
+
             curItem = pict.Name.Split('x')[1];
-            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            this.BackgroundImage = Image.FromFile($@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_background\{curItem}.png");
+
+            string[] dirWithVideos = Directory.GetFiles($@"C:\SevenMainFrames\{curItem}\video_motorcycles");
             if (dirWithVideos.Length == 0)
             {
                 button5.Visible = false;
@@ -367,63 +391,78 @@ namespace SevenMainFrames
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo2;
+
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            string[] dirWithVideos = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            this.BackgroundImage = Image.FromFile($@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_background\{curItem}.png");
+
+            string[] dirWithVideos = Directory.GetFiles($@"C:\SevenMainFrames\{curItem}\video_motorcycles");
             if (dirWithVideos.Length == 0)
             {
                 button5.Visible = false;
-                
+                button5.Enabled = false;
             }
             else
             {
                 button5.Visible = true;
                 button5.Enabled = true;
             }
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo;
+
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            this.BackgroundImage = Image.FromFile($@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_background\{curItem}.png");
+
+            string[] dirWithVideos = Directory.GetFiles($@"C:\SevenMainFrames\{curItem}\video_motorcycles");
+            if (dirWithVideos.Length == 0)
+            {
+                button5.Visible = false;
+                button5.Enabled = false;
+            }
+            else
+            {
+                button5.Visible = true;
+                button5.Enabled = true;
+            }
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
         private void pictureBox5_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo1;
+            //this.BackgroundImage = Properties.Resources.photo1;
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
         }
         private void pictureBox6_Click(object sender, EventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.photo2;
+            //this.BackgroundImage = Properties.Resources.photo2;
             pict = sender as PictureBox;
 
             PanelHelper.SetPanelBorderStyle(pict);
 
             curItem = pict.Name.Split('x')[1];
-            FileProcessor fileProcessor = new FileProcessor($"..//..//..//{curItem}.txt", label8, label1);
+            FileProcessor fileProcessor = new FileProcessor($@"C:\SevenMainFrames\{curItem}\characteristic_motorcycles\{curItem}.txt", label8, label1);
             fileProcessor.ProcessFile();
 
         }
@@ -549,7 +588,7 @@ namespace SevenMainFrames
         public ButtonAnimator()
         {
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 1; // Adjust the interval as needed
+            timer.Interval = 1;
             timer.Tick += Timer_Tick;
         }
 

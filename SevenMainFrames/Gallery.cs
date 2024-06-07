@@ -13,24 +13,38 @@ namespace SevenMainFrames
 {
     public partial class Gallery : Form
     {
+        // надо брать curItem из Form1 один, чтобы отслеживать какие нужны папки с фото
+        string curItem;
         public Gallery()
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.None;
             this.Size = new System.Drawing.Size(1920, 1080);
             this.BackgroundImageLayout = ImageLayout.Stretch;
+            System.Windows.Forms.Form f = System.Windows.Forms.Application.OpenForms["Form1"];
+            curItem = ((Form1)f).curItem;
+            string imagePaths = $@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_gallery\gallery.png"; // здесь можно загружать для разных папок разные фотки
 
-            string[] imagePaths = new string[]
-            {
-                "C:\\Рабочий стол\\photo.png" // здесь можно загружать для разных папок разные фотки
-            };
-
+            
             for (int i = 1; i < 11; i++)
             {
+                /*var pb = new PictureBox();
+                pb.Size = new Size(300, 300);
+                try
+                {
+                    pb.Image = Image.FromFile(imagePaths[0]);
+                }
+                catch 
+                {
+                    
+                }
+                pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                flowLayoutPanel1.Controls.Add(pb);*/
+
                 PictureBox pictureBox = this.Controls["pictureBox" + i.ToString()] as PictureBox;
                 if (pictureBox != null)
                 {
-                    pictureBox.Image = Image.FromFile(imagePaths[0]); // тут можно добавлять разные индекс
+                    pictureBox.Image = Image.FromFile(imagePaths); // тут можно добавлять разные индекс
                 }
             }
         }
