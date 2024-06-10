@@ -77,20 +77,11 @@ namespace SevenMainFrames
             axWindowsMediaPlayer1.stretchToFit = true;
 
             this.BackgroundImage = new Bitmap(@"C:\SevenMainFrames\1\img_motorcycles\img_background\1.png");
-            
-            SetDoubleBuffered(panel2);
-            SetDoubleBuffered(panel3);
-            SetDoubleBuffered(panel4);
-            SetDoubleBuffered(panel5);
-            SetDoubleBuffered(panel6);
-            SetDoubleBuffered(panel7);
-            SetDoubleBuffered(panel8);
-            SetDoubleBuffered(panel9);
-            SetDoubleBuffered(panel10);
-            SetDoubleBuffered(panel11);
-            SetDoubleBuffered(panel12);
-            SetDoubleBuffered(panel13);
-            SetDoubleBuffered(panel14);
+
+            Panel[] panels = {
+                panel2, panel3, panel4, panel5, panel6, panel7, 
+                panel8, panel9, panel10, panel11, panel12, panel13, panel14
+            };
 
             PictureBox[] pictureBoxes = {
                 pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5,
@@ -104,6 +95,7 @@ namespace SevenMainFrames
                 {
                     pictureBoxes[i].Image = Image.FromFile($@"C:\SevenMainFrames\{i + 1}\img_motorcycles\img_small_box\{i + 1}.png");
                     pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                    SetDoubleBuffered(panels[i]); 
                     SetDoubleBuffered(pictureBoxes[i]);
                 }
                 catch 
@@ -111,50 +103,6 @@ namespace SevenMainFrames
 
                 }
             }
-
-            /*SetDoubleBuffered(pictureBox1);
-            SetDoubleBuffered(pictureBox2);
-            SetDoubleBuffered(pictureBox3);
-            SetDoubleBuffered(pictureBox4);
-            SetDoubleBuffered(pictureBox5);
-            SetDoubleBuffered(pictureBox6);
-            SetDoubleBuffered(pictureBox7);
-            SetDoubleBuffered(pictureBox8);
-            SetDoubleBuffered(pictureBox9);
-            SetDoubleBuffered(pictureBox10);
-            SetDoubleBuffered(pictureBox11);
-            SetDoubleBuffered(pictureBox12);
-            SetDoubleBuffered(pictureBox13);*/
-
-
-
-            /*pictureBox1.Image = Properties.Resources.photo;
-            pictureBox2.Image = Properties.Resources.photo1;
-            pictureBox3.Image = Properties.Resources.photo2;
-            pictureBox4.Image = Properties.Resources.photo;
-            pictureBox5.Image = Properties.Resources.photo1;
-            pictureBox6.Image = Properties.Resources.photo2;
-            pictureBox7.Image = Properties.Resources.photo;
-            pictureBox8.Image = Properties.Resources.photo1;
-            pictureBox9.Image = Properties.Resources.photo2;
-            pictureBox10.Image = Properties.Resources.photo;
-            pictureBox11.Image = Properties.Resources.photo1;
-            pictureBox12.Image = Properties.Resources.photo2;
-            pictureBox13.Image = Properties.Resources.photo1;*/
-
-            /*pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox10.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox12.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox13.SizeMode = PictureBoxSizeMode.StretchImage;*/
             
             AssignMouseDownEvent(flowLayoutPanel1);
         }
@@ -566,7 +514,7 @@ namespace SevenMainFrames
 
         private void Button4Action()
         {
-            SoundPlayer simpleSound = new SoundPlayer($@"C:\\Рабочий стол\\sound\\{curItem}.wav");
+            SoundPlayer simpleSound = new SoundPlayer($@"C:\SevenMainFrames\{curItem}\sound_motorcycles\{curItem}.wav");
             time = 0;
             simpleSound.Play();
         }

@@ -26,8 +26,8 @@ namespace SevenMainFrames
             string imagePaths = $@"C:\SevenMainFrames\{curItem}\img_motorcycles\img_gallery\gallery.png"; // здесь можно загружать для разных папок разные фотки
 
             
-            for (int i = 1; i < 11; i++)
-            {
+            //for (int i = 1; i < 11; i++)
+            //{
                 /*var pb = new PictureBox();
                 pb.Size = new Size(300, 300);
                 try
@@ -36,17 +36,22 @@ namespace SevenMainFrames
                 }
                 catch 
                 {
-                    
+
                 }
                 pb.SizeMode = PictureBoxSizeMode.StretchImage;
                 flowLayoutPanel1.Controls.Add(pb);*/
 
-                PictureBox pictureBox = this.Controls["pictureBox" + i.ToString()] as PictureBox;
-                if (pictureBox != null)
-                {
-                    pictureBox.Image = Image.FromFile(imagePaths); // тут можно добавлять разные индекс
-                }
+                //PictureBox pictureBox = this.Controls["pictureBox" + i.ToString()] as PictureBox;
+                //if (pictureBox != null)
+                //{
+            for (int i = 0; i < flowLayoutPanel1.Controls.OfType<PictureBox>().Count(); i++)
+            {
+                PictureBox sourcePictureBox = flowLayoutPanel1.Controls.OfType<PictureBox>().ElementAt(i);
+                sourcePictureBox.Image = Image.FromFile(imagePaths);
             }
+                    //pictureBox.Image = Image.FromFile(imagePaths); // тут можно добавлять разные индекс
+                //}
+            //}
         }
 
         private void button1_Click(object sender, EventArgs e)

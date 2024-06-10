@@ -32,7 +32,7 @@ namespace SevenMainFrames
         {
             panel1.Visible = true;
             label2.Text = "Поздравляем, вы угадали";
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\\Рабочий стол\\sound\\1.wav");
+            SoundPlayer simpleSound = new SoundPlayer($@"C:\SevenMainFrames\1\sound_motorcycles\1.wav");
             simpleSound.Play();
             timer1.Start();
         }
@@ -41,7 +41,7 @@ namespace SevenMainFrames
         {
             panel1.Visible = true;
             label2.Text = "Жаль, вы не угадали";
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\\Рабочий стол\\sound\\loseSound.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\SevenMainFrames\loseSound.wav");
             simpleSound.Play();
             timer1.Start();
         }
@@ -50,7 +50,7 @@ namespace SevenMainFrames
         {
             panel1.Visible = true;
             label2.Text = "Жаль, вы не угадали";
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\\Рабочий стол\\sound\\loseSound.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\SevenMainFrames\loseSound.wav");
             simpleSound.Play();
             timer1.Start();
         }
@@ -59,7 +59,7 @@ namespace SevenMainFrames
         {
             panel1.Visible = true;
             label2.Text = "Жаль, вы не угадали";
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\\Рабочий стол\\sound\\loseSound.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\SevenMainFrames\loseSound.wav");
             simpleSound.Play();
             timer1.Start();
         }

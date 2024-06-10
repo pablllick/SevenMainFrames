@@ -28,7 +28,7 @@ namespace SevenMainFrames
 
             string curItem = ((Form1)f).curItem;
 
-            string[] strings = Directory.GetFiles($@"C:\Рабочий стол\items\{curItem}");
+            string[] strings = Directory.GetFiles($@"C:\SevenMainFrames\{curItem}\video_motorcycles");
 
             axWindowsMediaPlayer1.Visible = true;
             axWindowsMediaPlayer1.URL = strings[0];
